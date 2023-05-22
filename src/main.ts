@@ -2,8 +2,10 @@ import 'reflect-metadata';
 
 import application from './application';
 import * as http from 'http';
+import dotenv from 'dotenv';
 
-const PORT = process.env.PORT || 3000;
+dotenv.config();
+const PORT: string | number = process.env.PORT || 3000;
 
 const app = http.createServer(application.instance);
 
