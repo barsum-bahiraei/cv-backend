@@ -1,7 +1,7 @@
-import express, { Application as ExApplication, Handler } from 'express';
-import { controllers } from './base.controller';
-import { MetadataKeys } from './utils/metadata.keys';
-import { IRouter } from './utils/decorators/handlers.decorator';
+import express, {Application as ExApplication, Handler, Request, Response} from 'express';
+import {controllers} from './base.controller';
+import {MetadataKeys} from './utils/metadata.keys';
+import {IRouter} from './utils/decorators/handlers.decorator';
 
 class Application {
   private readonly _instance: ExApplication;
@@ -16,9 +16,9 @@ class Application {
     this.registerRouters();
   }
 
-  private registerRouters() {
-    this._instance.get('/', (req, res) => {
-      res.json({ message: 'Hello World!' });
+  private registerRouters(): void {
+    this._instance.get('/', (req: Request, res: Response): void => {
+      res.json({message: 'Hello World!'});
     });
 
     const info: Array<{ api: string, handler: string }> = [];
@@ -31,7 +31,7 @@ class Application {
 
       const exRouter = express.Router();
 
-      routers.forEach(({ method, path, handlerName}) => {
+      routers.forEach(({method, path, handlerName}): void => {
         exRouter[method](path, controllerInstance[String(handlerName)].bind(controllerInstance));
 
         info.push({
