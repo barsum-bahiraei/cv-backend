@@ -1,12 +1,15 @@
 import {UserModel} from "./models/user.model";
+import {PrismaClient} from "prisma/prisma-client/scripts/default-index";
 
 export class UserService {
-  public findAll(): Array<UserModel> {
-    return [
-      {
-        name: 'amin',
-        age: 19
-      }
-    ]
+  private prisma
+
+  constructor() {
+    this.prisma = new PrismaClient()
+  }
+
+  async findAll(): Array<UserModel> {
+    const users: Array<UserModel> = this.prisma.user.findMany()
+    return users;
   }
 }
