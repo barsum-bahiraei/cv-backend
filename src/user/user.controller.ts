@@ -12,8 +12,8 @@ export class UserController {
   }
 
   @Get('')
-  public index(req: Request, res: Response): void {
-    res.json(this.userService.getAllUser());
+  public findAll(req: Request, res: Response): void {
+    res.json(this.userService.findAll());
   }
 
   // @Post('')

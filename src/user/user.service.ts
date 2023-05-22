@@ -1,7 +1,7 @@
 import {UserModel} from "./models/user.model";
 
 export class UserService {
-  public getAllUser(): Array<UserModel> {
+  public findAll(): Array<UserModel> {
     return [
       {
         name: 'amin',
