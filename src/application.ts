@@ -1,4 +1,4 @@
-import express, {Application as ExApplication, Handler, Request, Response} from 'express';
+import express, {Application as ExApplication, Handler, Request, Response, Router} from 'express';
 import {controllers} from './base.controller';
 import {MetadataKeys} from './utils/metadata.keys';
 import {IRouter} from './utils/decorators/handlers.decorator';
@@ -26,21 +26,21 @@ class Application {
     controllers.forEach((controllerClass) => {
       const controllerInstance: { [handleName: string]: Handler } = new controllerClass() as any;
 
-      const basePath: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, controllerClass);
+      const path: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, controllerClass);
       const routers: IRouter[] = Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass);
 
-      const exRouter = express.Router();
+      const router: Router = express.Router();
 
       routers.forEach(({method, path, handlerName}): void => {
-        exRouter[method](path, controllerInstance[String(handlerName)].bind(controllerInstance));
+        router[method](path, controllerInstance[String(handlerName)].bind(controllerInstance));
 
         info.push({
-          api: `${method.toLocaleUpperCase()} ${basePath + path}`,
+          api: `${method.toLocaleUpperCase()} ${path + path}`,
           handler: `${controllerClass.name}.${String(handlerName)}`,
         });
       });
 
-      this._instance.use(basePath, exRouter);
+      this._instance.use(path, router);
     });
 
     console.table(info);
